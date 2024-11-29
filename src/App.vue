@@ -1,26 +1,32 @@
-<template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-</template>
-
-<script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+<script setup>
+import NavBar from './components/NavBar.vue';
+import FooterComponent from './components/FooterComponent.vue';
+import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+//import Login from './components/LoginView.vue';
+//import { useRouter } from 'vue-router';
+//const router = useRouter()
+const route = useRoute()
+const router = useRouter()
+const refreshCounter = ref(0)
+router.beforeEach(async (to, from) => {
+  console.log(to.name+" "+from.name)
+  console.log(route.fullPath)
+})
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<template>
+  <div class="flex flex-col min-h-screen">
+    <!-- NavBar -->
+    <NavBar :key="refreshCounter"/>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+      <RouterView :key="route.fullPath"/>
+    </main>
+
+    <!-- Footer -->
+    <FooterComponent :key="route.fullPath"/>
+  </div>
+</template>
